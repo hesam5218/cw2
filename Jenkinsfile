@@ -3,13 +3,14 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
+        GIT_CREDENTIALS = credentials('GitHub') // Replace 'github-ssh' with your actual credential ID
     }
 
     stages {
         stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'git@github.com:hesam5218/cw2.git'
-            }
+           steps {
+        git branch: 'main', credentialsId: 'GitHub', url: 'git@github.com:hesam5218/cw2.git'
+    }
         }
 
         stage('Build Docker Image') {
