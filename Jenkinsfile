@@ -7,6 +7,14 @@ pipeline {
     }
 
     stages {
+
+        stage('Test Docker Access') {
+    steps {
+        sh 'docker --version'
+        sh 'docker ps'
+    }
+}
+
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'GitHub', url: 'git@github.com:hesam5218/cw2.git'
