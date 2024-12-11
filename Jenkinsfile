@@ -61,6 +61,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                sshagent(['jenkins-k8s-ssh-key']) {
                     echo 'Deploying to Kubernetes...'
                     sh '''
                         kubectl set image deployment/cw2-server cw2-server=hesam5218/cw2-server:${BUILD_NUMBER}
