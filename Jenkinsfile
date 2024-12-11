@@ -1,7 +1,7 @@
 
 pipeline {
      agent any
-    }
+    
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker')
         GIT_CREDENTIALS = credentials('GitHub')
