@@ -2,11 +2,18 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
+        DOCKER_HUB_CREDENTIALS = credentials('docker')
         GIT_CREDENTIALS = credentials('GitHub')
     }
 
     stages {
+
+         stage('DockerHub Login') {
+            steps {
+                echo 'Logging in to DockerHub...'
+                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
 
         stage('Test Docker Access') {
     steps {
@@ -42,12 +49,7 @@ pipeline {
             }
         }
 
-        stage('DockerHub Login') {
-            steps {
-                echo 'Logging in to DockerHub...'
-                sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
+       
 
         stage('Push Docker Image') {
             steps {
