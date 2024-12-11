@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
-        GIT_CREDENTIALS = credentials('GitHub') // Replace 'github-ssh' with your actual credential ID
+        GIT_CREDENTIALS = credentials('GitHub')
     }
 
     stages {
