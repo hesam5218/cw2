@@ -7,11 +7,9 @@ WORKDIR /app
 # Copy the application files to the container
 COPY server.js .
 
-# Install dependencies (if any are added later)
-# RUN npm install
-
-# Expose port 8080 for the application
-EXPOSE 80
+# Expose port 3000 for the application (adjusted to match the run command)
+EXPOSE 3000
 
 # Define the command to run the application
 CMD ["node", "server.js"]
+
