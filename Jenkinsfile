@@ -1,9 +1,6 @@
 
 pipeline {
-     agent {
-        docker {
-            image 'bitnami/kubectl:latest'
-        }
+     agent any
     }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker')
