@@ -63,7 +63,7 @@ pipeline {
                 sshagent(['jenkins-k8s-ssh-key']) {
                     echo 'Deploying to Kubernetes...'
                     sh '''
-                        ssh -o StrictHostKeyChecking=no user@remote-server << EOF
+                        ssh -o StrictHostKeyChecking=no remote-server << EOF
             kubectl set image deployment/cw2-server cw2-server=hesam5218/cw2-server:${BUILD_NUMBER}
             EOF
                     '''
