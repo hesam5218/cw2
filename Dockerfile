@@ -8,7 +8,7 @@ WORKDIR /app
 COPY server.js .
 
 # Expose port 3000 for the application (adjusted to match the run command)
-EXPOSE 3000
+EXPOSE 8081  443
 
 # Define the command to run the application
 CMD ["node", "server.js"]
