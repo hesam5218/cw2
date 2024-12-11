@@ -1,7 +1,6 @@
-
 pipeline {
-     agent any
-    
+    agent any
+
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker')
         GIT_CREDENTIALS = credentials('GitHub')
@@ -28,7 +27,6 @@ pipeline {
                 git branch: 'main', credentialsId: 'GitHub', url: 'git@github.com:hesam5218/cw2.git'
             }
         }
-        
 
         stage('Build Docker Image') {
             steps {
@@ -38,7 +36,19 @@ pipeline {
             }
         }
 
-        
+        stage('Test Docker Image') {
+            steps {
+                echo 'Testing Docker Image...'
+                sh '''
+                    docker image inspect hesam5218/cw2-server:${BUILD_NUMBER}
+                    docker run --name test-container -p 8081:3000 -d hesam5218/cw2-server:${BUILD_NUMBER}
+                    docker ps
+                    docker stop test-container
+                    docker rm test-container
+                '''
+            }
+        }
+
        
 
         stage('Push Docker Image') {
@@ -47,18 +57,16 @@ pipeline {
                 sh 'docker push hesam5218/cw2-server:${BUILD_NUMBER}'
             }
         }
-       
-       stage('Deploy') {
-    steps {
-        sshagent(['jenkins-k8s-ssh-key']) {
-            echo 'Deploying to Kubernetes...'
-            sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@<REMOTE_HOST> "kubectl set image deployment/cw2-server cw2-server=hesam5218/cw2-server:${BUILD_NUMBER}"
-            '''
-        }
-    }
 
-
+        stage('Deploy') {
+            steps {
+                sshagent(['jenkins-k8s-ssh-key']) {
+                    echo 'Deploying to Kubernetes...'
+                    sh '''
+                        kubectl set image deployment/cw2-server cw2-server=hesam5218/cw2-server:${BUILD_NUMBER}
+                    '''
+                }
+            }
         }
     }
 }
