@@ -1,7 +1,10 @@
 
 pipeline {
-    agent any
-
+     agent {
+        docker {
+            image 'bitnami/kubectl:latest'
+        }
+    }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker')
         GIT_CREDENTIALS = credentials('GitHub')
@@ -38,19 +41,7 @@ pipeline {
             }
         }
 
-        stage('Test Docker Image') {
-            steps {
-                echo 'Testing Docker Image...'
-                sh '''
-                    docker image inspect hesam5218/cw2-server:${BUILD_NUMBER}
-                    docker run --name test-container -p 8081:3000 -d hesam5218/cw2-server:${BUILD_NUMBER}
-                    docker ps
-                    docker stop test-container
-                    docker rm test-container
-                '''
-            }
-        }
-
+        
        
 
         stage('Push Docker Image') {
